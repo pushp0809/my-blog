@@ -19,7 +19,7 @@ function HomePage({ user, category }) {
   const handleLoad = async () => {
     if (user === null || user === undefined) {
       await fetch(`${API_BASE_URL}/login/success`, {
-        method: "POST",
+        method: "GET",
         credentials: "include",
         withCredentials: true,
         headers: {
@@ -29,7 +29,7 @@ function HomePage({ user, category }) {
         },
       })
         .then((data) => {
-          if (data.status === 201) return data.json();
+          if (data.status === 200) return data.json();
           throw new Error("Authentication Failed!");
         })
         .then((data) => {

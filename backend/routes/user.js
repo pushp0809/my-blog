@@ -5,6 +5,7 @@ const { authUser } = require('../middleware/auth');
 const {
   register,
   login,
+  loginSuccess,
   getUser,
   fetchprof,
   uploadprofile,
@@ -16,10 +17,15 @@ const {
 // ── Auth ──────────────────────────────────────────────────────────────────────
 router.post('/register', register);
 router.post('/login', login);
+router.get('/login/success', loginSuccess);
 
 // Logout is stateless (client deletes token/cookie)
 router.get('/logout', (req, res) => {
-  res.clearCookie('sessionId');
+  res.clearCookie('sessionId', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  });
   return res.status(200).json({ success: true });
 });
 

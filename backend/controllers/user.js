@@ -3,6 +3,23 @@ const User = require('../models/User');
 const Post = require('../models/Post');
 const bcrypt = require('bcrypt');
 const { generateToken } = require('../helper/token');
+const jwt = require('jsonwebtoken');
+const keys = require('../config/keys');
+
+const authCookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+  maxAge: 15 * 24 * 60 * 60 * 1000,
+};
+
+const buildAuthPayload = (user, token) => ({
+  id: user._id,
+  name: user.name,
+  picture: user.picture,
+  bio: user.bio,
+  token,
+});
 
 // ── Register ──────────────────────────────────────────────────────────────────
 exports.register = async (req, res) => {
@@ -32,13 +49,8 @@ exports.register = async (req, res) => {
     }).save();
 
     const token = generateToken({ id: user._id.toString() }, '15d');
-    return res.status(201).json({
-      id: user._id,
-      name: user.name,
-      picture: user.picture,
-      bio: user.bio,
-      token,
-    });
+    res.cookie('sessionId', token, authCookieOptions);
+    return res.status(201).json(buildAuthPayload(user, token));
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -64,15 +76,32 @@ exports.login = async (req, res) => {
     }
 
     const token = generateToken({ id: user._id.toString() }, '15d');
-    return res.status(200).json({
-      id: user._id,
-      name: user.name,
-      picture: user.picture,
-      bio: user.bio,
-      token,
-    });
+    res.cookie('sessionId', token, authCookieOptions);
+    return res.status(200).json(buildAuthPayload(user, token));
   } catch (error) {
     return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+// ── Login success (cookie-based session check) ────────────────────────────────
+exports.loginSuccess = async (req, res) => {
+  try {
+    const token = req.cookies?.sessionId;
+    if (!token) {
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+
+    const decoded = jwt.verify(token, keys.TOKEN_SECRET);
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      res.clearCookie('sessionId', authCookieOptions);
+      return res.status(401).json({ message: 'Not authenticated' });
+    }
+
+    return res.status(200).json(buildAuthPayload(user, token));
+  } catch (error) {
+    res.clearCookie('sessionId', authCookieOptions);
+    return res.status(401).json({ message: 'Not authenticated' });
   }
 };
 

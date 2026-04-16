@@ -36,7 +36,8 @@ function Auth() {
       try {
         const { data } = await axios.post(
           `${API_BASE_URL}/login`,
-          { temail, password }
+          { temail, password },
+          { withCredentials: true }
         );
         setSuccess('Login successful!');
         setTimeout(() => {
@@ -55,7 +56,8 @@ function Auth() {
       try {
         const { data } = await axios.post(
           `${API_BASE_URL}/register`,
-          { name, temail, password }
+          { name, temail, password },
+          { withCredentials: true }
         );
         setSuccess('Account created! Redirecting…');
         setTimeout(() => {
