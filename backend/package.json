@@ -4,7 +4,9 @@
   "description": "multi-user blog application with mern",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "echo 'Build complete'"
   },
   "author": "pushp0809",
   "license": "MIT",

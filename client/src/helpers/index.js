@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = 'http://localhost:5002';
+const API = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5002';
 
 // ── Auth helpers ──────────────────────────────────────────────────────────────
 export const clearCookie = (cookieName) => {

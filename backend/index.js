@@ -14,10 +14,24 @@ const app = express();
 const PORT = keys.PORT || 5002;
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5002',
+  'https://my-blog-liard-nine-52.vercel.app',
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(cors({
-  origin: [keys.BACKEND_URL, keys.FRONTEND_URL],
-  methods: 'GET,POST,PUT,DELETE',
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,POST,PUT,DELETE,PATCH',
   credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // ── MongoDB ───────────────────────────────────────────────────────────────────
@@ -45,6 +59,10 @@ app.use('/', uploadRoutes);
 app.use('/', postRoutes);
 
 // ── Start ─────────────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
