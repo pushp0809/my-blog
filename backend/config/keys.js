@@ -8,5 +8,4 @@ module.exports = {
   CLOUD_API_SECRET: process.env.CLOUD_API_SECRET,
   PORT: process.env.PORT || 5002,
   BACKEND_URL: process.env.REACT_APP_BACKEND_URL,
-  FRONTEND_URL: process.env.REACT_APP_FRONTEND_URL,
 };

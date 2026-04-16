@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5002';
+
 function Auth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ function Auth() {
       }
       try {
         const { data } = await axios.post(
-          `http://localhost:5002/login`,
+          `${API_BASE_URL}/login`,
           { temail, password }
         );
         setSuccess('Login successful!');
@@ -52,7 +54,7 @@ function Auth() {
       }
       try {
         const { data } = await axios.post(
-          `http://localhost:5002/register`,
+          `${API_BASE_URL}/register`,
           { name, temail, password }
         );
         setSuccess('Account created! Redirecting…');

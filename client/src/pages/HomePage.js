@@ -8,6 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Footer from "../components/footer/Footer";
+
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5002";
+
 function HomePage({ user, category }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -15,7 +18,7 @@ function HomePage({ user, category }) {
   const [flag, setflag] = useState(false);
   const handleLoad = async () => {
     if (user === null || user === undefined) {
-      await fetch(`http://localhost:5002/login/success`, {
+      await fetch(`${API_BASE_URL}/login/success`, {
         method: "POST",
         credentials: "include",
         withCredentials: true,

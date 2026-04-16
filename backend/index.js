@@ -18,18 +18,22 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://localhost:5002',
   'https://my-blog-liard-nine-52.vercel.app',
-  process.env.FRONTEND_URL,
 ].filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (allowedOrigins.includes(origin)) return true;
+  return /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
+};
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || isAllowedOrigin(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: 'GET,POST,PUT,DELETE,PATCH',
+  methods: 'GET,POST,PUT,DELETE,PATCH,OPTIONS',
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));

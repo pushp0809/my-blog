@@ -3,6 +3,8 @@ import { useState } from "react";
 import "./resetPassword.css";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5002";
+
 function ResetPassword() {
   const [email, setEmail] = useState("");
   const [code, setcode] = useState("");
@@ -20,7 +22,7 @@ function ResetPassword() {
   const handleSearchClick = async () => {
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/findOutUser`,
+        `${API_BASE_URL}/findOutUser`,
         {
           email,
         }
@@ -43,7 +45,7 @@ function ResetPassword() {
   const sendCode = async () => {
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/sendResetPasswordCode`, { email: foundUser.email, code: code });
+        `${API_BASE_URL}/sendResetPasswordCode`, { email: foundUser.email, code: code });
       setFoundsend(true);
     } catch (error) {
       // console.log(error.message);
@@ -54,7 +56,7 @@ function ResetPassword() {
     e.preventDefault()
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/validateResetCode`, { email: foundUser.email, code: code });
+        `${API_BASE_URL}/validateResetCode`, { email: foundUser.email, code: code });
       if (data.message === "ok") {
         setFoundsend(false);
         setopen(true);
@@ -79,7 +81,7 @@ function ResetPassword() {
 
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/changePassword`, { email: foundUser.email, password: pass });
+        `${API_BASE_URL}/changePassword`, { email: foundUser.email, password: pass });
       if (data.message === "ok") {
         alert("Password Changed");
         setTimeout(() => {

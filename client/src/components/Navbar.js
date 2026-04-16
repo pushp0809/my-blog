@@ -14,6 +14,9 @@ import axios from "axios";
 import { clearCookie } from "../helpers";
 import { useMediaQuery } from "react-responsive";
 import { searchPosts } from "../helpers/index";
+
+const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5002";
+
 function Navbar({ postpage }) {
   const view1 = useMediaQuery({ query: "(max-width: 564px)" });
   const view2 = useMediaQuery({ query: "(max-width: 420px)" });
@@ -47,7 +50,7 @@ function Navbar({ postpage }) {
   const { user } = useSelector((state) => ({ ...state }));
   const handleLoad = () => {
     if (user === null || user === undefined) {
-      fetch(`http://localhost:5002/login/success`, {
+      fetch(`${API_BASE_URL}/login/success`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -76,7 +79,7 @@ function Navbar({ postpage }) {
     e.preventDefault();
     try {
       const { data } = await axios.get(
-        `http://localhost:5002/logout`, { withCredentials: true }
+        `${API_BASE_URL}/logout`, { withCredentials: true }
       );
       if (data) {
         Cookies.set("user", "");

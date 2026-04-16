@@ -13,8 +13,7 @@ if (process.env.NODE_ENV === 'production') {
         PASS: process.env.PASS_PRODUCTION,
         EMAIL_ID: process.env.EMAIL_ID_PRODUCTION,
         PORT: process.env.PORT_PRODUCTION,
-        BACKEND_URL: process.env.REACT_APP_BACKEND_URL_PRODUCTION,
-        FRONTEND_URL: process.env.REACT_APP_FRONTEND_URL_PRODUCTION
+        BACKEND_URL: process.env.REACT_APP_BACKEND_URL_PRODUCTION
     }
 }
 else {
@@ -30,7 +29,6 @@ else {
         PASS: process.env.PASS,
         EMAIL_ID: process.env.EMAIL_ID,
         PORT: process.env.PORT,
-        BACKEND_URL: process.env.REACT_APP_BACKEND_URL,
-        FRONTEND_URL: process.env.REACT_APP_FRONTEND_URL
+        BACKEND_URL: process.env.REACT_APP_BACKEND_URL
     }
 }
