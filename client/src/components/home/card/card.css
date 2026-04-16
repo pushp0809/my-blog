@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;600&display=swap');
+
+/* ── HERO SECTION ────────────────────────── */
+
+.intro_section {
+  width: 100%;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+}
+
+.parallax-img {
+  top: 64px;
+  height: 520px;
+  position: relative;
+}
+
+/* Dark overlay gradient over parallax image */
+.parallax-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10,10,15,0.55) 0%,
+    rgba(10,10,15,0.72) 60%,
+    rgba(10,10,15,0.92) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Hero inner content */
+.parallax-img > div {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 24px;
+}
+
+/* Hero headline */
+.hero-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #fff;
+  text-align: center;
+  letter-spacing: -0.02em;
+  text-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  max-width: 700px;
+}
+
+.hero-headline em {
+  font-style: italic;
+  background: linear-gradient(135deg, #a78bfa, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hero subtitle */
+.card-text {
+  max-width: 580px;
+  color: rgba(255,255,255,0.78);
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  text-align: center;
+  line-height: 1.7;
+  font-weight: 400;
+  text-shadow: 0px 1px 8px rgba(0,0,0,0.5);
+}
+
+/* Category dropdown */
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 5;
+}
+
+.dropbtn {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: white;
+  padding: 10px 22px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.02em;
+  font-family: 'Inter', sans-serif;
+}
+
+.dropbtn:hover {
+  background: rgba(124,58,237,0.4);
+  border-color: rgba(167,139,250,0.5);
+  box-shadow: 0 0 20px rgba(124,58,237,0.35);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(22,22,31,0.98);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(124,58,237,0.3);
+  min-width: 160px;
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 24px rgba(124,58,237,0.15);
+  overflow: hidden;
+}
+
+.dropdown-content .di {
+  color: rgba(255,255,255,0.8);
+  padding: 12px 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dropdown-content .di::before {
+  content: '→';
+  font-size: 0.75rem;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: all 0.2s ease;
+  color: #a78bfa;
+}
+
+.dropdown-content .di:hover {
+  background: rgba(124,58,237,0.2);
+  color: #fff;
+  padding-left: 22px;
+}
+
+.dropdown-content .di:hover::before {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  animation: dropIn 0.18s ease;
+}
+
+@keyframes dropIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.dropdown:hover .dropbtn {
+  background: rgba(124,58,237,0.35);
+  border-color: rgba(167,139,250,0.5);
+}
+
+/* Responsive */
+@media screen and (max-width: 733px) {
+  .card-text { font-size: 0.95rem; }
+}
+
+@media screen and (max-width: 564px) {
+  .parallax-img { height: 420px; }
+  .card-text { font-size: 0.875rem; padding: 0 1rem; }
+  .dropbtn { font-size: 0.85rem; padding: 9px 18px; }
+}
