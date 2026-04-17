@@ -12,6 +12,7 @@ const postRoutes = require('./routes/post');
 
 const app = express();
 const PORT = keys.PORT || 5002;
+let mongoConnectionPromise = null;
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
 const allowedOrigins = [
@@ -39,16 +40,41 @@ app.use(cors({
 }));
 
 // ── MongoDB ───────────────────────────────────────────────────────────────────
-mongoose.set('strictQuery', false);
-mongoose
-  .connect(keys.MONGO_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+const ensureDbConnection = async () => {
+  if (mongoose.connection.readyState === 1) {
+    return;
+  }
+
+  if (!mongoConnectionPromise) {
+    mongoose.set('strictQuery', false);
+    mongoConnectionPromise = mongoose
+      .connect(keys.MONGO_URI)
+      .then(() => {
+        console.log('MongoDB connected');
+      })
+      .catch((err) => {
+        mongoConnectionPromise = null;
+        throw err;
+      });
+  }
+
+  await mongoConnectionPromise;
+};
 
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
+});
+
+app.use(async (req, res, next) => {
+  try {
+    await ensureDbConnection();
+    next();
+  } catch (err) {
+    console.error('MongoDB connection error:', err?.message || err);
+    return res.status(503).json({ message: 'Database connection unavailable. Please retry.' });
+  }
 });
 
 app.use(express.json({ limit: '10mb' }));
