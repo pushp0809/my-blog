@@ -130,10 +130,22 @@
 .article .article_content {
   overflow-x: scroll;
   margin-top: 1.5rem;
+  color: #111827;
 }
 
 .article .article_content img {
   object-fit: contain;
+}
+
+/* Ensure rich-text content stays visible even if editor saved light text styles */
+.article .article_content,
+.article .article_content * {
+  color: #111827 !important;
+}
+
+.article .article_content a {
+  color: #7c3aed !important;
+  text-decoration: underline;
 }
 
 @media screen and (max-width: 1008px) {
